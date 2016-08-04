@@ -44,7 +44,14 @@
 
 	<include buildfile="common.xml" />
 
-	<target name="common.compile-all" depends="common.generate-assemblyinfo">
+	<target name="common.nuget-restore" depends="common.init">
+        <exec basedir="${tools.dir}" workingdir="${root.dir}/src" program="NuGet.exe">
+          <arg value="restore" />
+          <arg value="NHibernate.sln" />
+        </exec>
+	</target>
+
+	<target name="common.compile-all" depends="common.generate-assemblyinfo common.nuget-restore">
 		<!--property name="msbuild.cmd" value="${cmd.sln} ${cmd.out} ${cmd.platform} ${cmd.debug} ${cmd.optimize} ${cmd.doc} /t:Rebuild /v:q /m" /-->		
 		<readregistry property="MSBuildToolsPath" key="SOFTWARE\Microsoft\MSBuild\ToolsVersions\14.0\MSBuildToolsPath" hive="LocalMachine" />
 
